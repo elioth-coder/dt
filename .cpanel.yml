@@ -1,0 +1,22 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/generaltiniogov/document_tracking/
+    - /bin/cp -R document_tracking/account $DEPLOYPATH
+    - /bin/cp -R document_tracking/assets $DEPLOYPATH
+    - /bin/cp -R document_tracking/components $DEPLOYPATH
+    - /bin/cp -R document_tracking/departments $DEPLOYPATH
+    - /bin/cp -R document_tracking/documents $DEPLOYPATH
+    - /bin/cp -R document_tracking/process $DEPLOYPATH
+    - /bin/cp -R document_tracking/projects $DEPLOYPATH
+    - /bin/cp -R document_tracking/reports $DEPLOYPATH
+    - /bin/cp -R document_tracking/tasks $DEPLOYPATH
+    - /bin/cp -R document_tracking/upload $DEPLOYPATH
+    - /bin/cp -R document_tracking/users $DEPLOYPATH
+    - /bin/cp -R document_tracking/vendor $DEPLOYPATH
+    - /bin/cp document_tracking/composer.json $DEPLOYPATH
+    - /bin/cp document_tracking/composer.lock $DEPLOYPATH
+    - /bin/cp document_tracking/connection.php $DEPLOYPATH
+    - /bin/cp document_tracking/index.php $DEPLOYPATH
+    - /bin/cp document_tracking/login.js $DEPLOYPATH
+    - /bin/cp document_tracking/login.php $DEPLOYPATH

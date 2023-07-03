@@ -1,0 +1,33 @@
+<?php
+session_start();
+require_once "../connection.php";
+
+try {
+    $q = "%" . $_GET['q'] . "%";
+    $stmt = $conn->prepare(
+        "SELECT *, (SELECT COUNT(task_id) FROM project_tasks WHERE project_id=id) AS tasks 
+        FROM project WHERE user_id=:user_id AND name LIKE :q"
+    );
+    $stmt->execute([
+        "q"       => $q,
+        "user_id" => $_SESSION['user']['id']
+    ]);
+    $rows = [];
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $response = [ 
+        "message" => "Fetched rows successfully!",
+        "rows"    => $rows,
+        "status"  => "success"
+    ];
+    echo json_encode($response);
+} catch (PDOException $e) {
+    $response = [ 
+        "message" => "Error: " . $e->getMessage(),
+        "status"  => "error"
+    ];
+    echo json_encode($response);
+}
+$conn = null;
