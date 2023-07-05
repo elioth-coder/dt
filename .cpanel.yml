@@ -11,7 +11,7 @@ deployment:
     - /bin/cp -R document_tracking/projects $DEPLOYPATH
     - /bin/cp -R document_tracking/reports $DEPLOYPATH
     - /bin/cp -R document_tracking/tasks $DEPLOYPATH
-    - /bin/cp -R document_tracking/upload $DEPLOYPATH
+    # - /bin/cp -R document_tracking/upload $DEPLOYPATH
     - /bin/cp -R document_tracking/users $DEPLOYPATH
     - /bin/cp -R document_tracking/vendor $DEPLOYPATH
     - /bin/cp document_tracking/composer.json $DEPLOYPATH
