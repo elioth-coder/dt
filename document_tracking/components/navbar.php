@@ -3,7 +3,7 @@
         <a class="navbar-brand" href="<?php echo ($page=="dashboard") ? "" : "." ?>./">
             <img src="<?php echo ($page=="dashboard") ? "" : "." ?>./assets/images/logo.png" 
                 class="d-inline-block rounded-circle shadow-lg" style="height: 40px;" />
-            Document Tracking
+            Document Management
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
