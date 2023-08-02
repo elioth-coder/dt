@@ -20,3 +20,4 @@ deployment:
     - /bin/cp document_tracking/index.php $DEPLOYPATH
     - /bin/cp document_tracking/login.js $DEPLOYPATH
     - /bin/cp document_tracking/login.php $DEPLOYPATH
+    - /bin/cp document_tracking/style.css $DEPLOYPATH
