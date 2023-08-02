@@ -16,7 +16,8 @@ async function fetchMembers(departmentId, selected=true) {
 
 
 async function showMembersModal(departmentId) {
-    memberModal.show();
+    SearchMembers.setAttribute('department_id', departmentId);
+    departmentMembersModal.show();
     let selectedMembers  = await fetchMembers(departmentId);
     let availableMembers = await fetchMembers(departmentId, false);
 
@@ -24,10 +25,10 @@ async function showMembersModal(departmentId) {
     populateSelectedMembersTable(departmentId, selectedMembers);
 }
 
-const memberModal = new bootstrap.Modal('#MemberModal');
+const departmentMembersModal = new bootstrap.Modal('#DepartmentMembersModal');
 
-MemberModal.addEventListener('hide.bs.modal', async event => {
-    MemberModalForm.querySelector('table tbody').innerHTML = "";
+DepartmentMembersModal.addEventListener('hide.bs.modal', async event => {
+    DepartmentMembersModalForm.querySelector('table tbody').innerHTML = "";
 });
 
 async function addDepartmentMember(button, departmentId, memberId) {
@@ -166,7 +167,7 @@ function populateSelectedMembersTable(departmentId, members) {
 
 async function setMembers(departmentId) {
     departmentModal.hide();
-    memberModal.show();
+    departmentMembersModal.show();
     SearchMembers.setAttribute('department_id', departmentId);
     let members = await searchMembers(departmentId);
     populateAvailableMembersTable(departmentId, members);

@@ -14,9 +14,8 @@ async function fetchTasks(projectId, selected=true) {
     return rows;
 }
 
-
 async function showTasksModal(projectId) {
-    taskModal.show();
+    projectTasksModal.show();
     let selectedTasks  = await fetchTasks(projectId);
     let availableTasks = await fetchTasks(projectId, false);
 
@@ -24,10 +23,10 @@ async function showTasksModal(projectId) {
     populateSelectedTasksTable(projectId, selectedTasks);
 }
 
-const taskModal = new bootstrap.Modal('#TaskModal');
+const projectTasksModal = new bootstrap.Modal('#ProjectTasksModal');
 
-TaskModal.addEventListener('hide.bs.modal', async event => {
-    TaskModalForm.querySelector('table tbody').innerHTML = "";
+ProjectTasksModal.addEventListener('hide.bs.modal', async event => {
+    ProjectTasksModalForm.querySelector('table tbody').innerHTML = "";
 });
 
 async function addProjectTask(button, projectId, taskId) {
@@ -98,7 +97,7 @@ function populateAvailableTasksTable(projectId, tasks) {
             `<tr>`,
             `   <td class="text-center">${task.id}</td>`,
             `   <td>${task.name}</td>`,
-            `   <td class="text-center">${task.status}</td>`,
+            `   <td class="">${task.status}</td>`,
             `   <td class="text-center">`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-secondary">`,
             `           <img src="../assets/images/loader.gif" style="height: 16px; margin-top: -5px;" />`,
@@ -132,7 +131,7 @@ function populateSelectedTasksTable(projectId, tasks) {
             `<tr>`,
             `   <td class="text-center">${task.id}</td>`,
             `   <td>${task.name}</td>`,
-            `   <td class="text-center">${task.status}</td>`,
+            `   <td class="">${task.status}</td>`,
             `   <td class="text-center">`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-secondary">`,
             `           <img src="../assets/images/loader.gif" style="height: 16px; margin-top: -5px;" />`,
@@ -160,7 +159,7 @@ function populateSelectedTasksTable(projectId, tasks) {
 
 async function setTasks(projectId) {
     projectModal.hide();
-    taskModal.show();
+    projectTasksModal.show();
     SearchTasks.setAttribute('project_id', projectId);
     let tasks = await searchTasks(projectId);
     populateAvailableTasksTable(projectId, tasks);

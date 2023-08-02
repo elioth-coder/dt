@@ -146,14 +146,6 @@ $counter_data = [
         ],
         [
             "page"       => "tasks",
-            "link"       => "./tasks/?status=COMPLETED",
-            "bg-color"   => "danger",
-            "font-color" => "text-white",
-            "title"      => "Completed",
-            "count"      => $count['completed']
-        ],
-        [
-            "page"       => "tasks",
             "link"       => "./tasks/?status=RE-ASSIGNED",
             "bg-color"   => "info",
             "font-color" => "text-white",
@@ -162,11 +154,11 @@ $counter_data = [
         ],    
         [
             "page"       => "tasks",
-            "link"       => "./tasks/?status=DONE",
-            "bg-color"   => "success",
+            "link"       => "./tasks/?status=ASSIGNED",
+            "bg-color"   => "info",
             "font-color" => "text-white",
-            "title"      => "Done",
-            "count"      => $count['done']
+            "title"      => "Assigned",
+            "count"      => $count['assigned']
         ],    
         [
             "page"       => "tasks",
@@ -175,16 +167,23 @@ $counter_data = [
             "font-color" => "text-white",
             "title"      => "In-Progress",
             "count"      => $count['in_progress']
-        ],         
+        ],   
         [
             "page"       => "tasks",
-            "link"       => "./tasks/?status=ASSIGNED",
-            "bg-color"   => "info",
+            "link"       => "./tasks/?status=DONE",
+            "bg-color"   => "success",
             "font-color" => "text-white",
-            "title"      => "Assigned",
-            "count"      => $count['assigned']
-        ],    
-    
+            "title"      => "Done",
+            "count"      => $count['done']
+        ],          
+        [
+            "page"       => "tasks",
+            "link"       => "./tasks/?status=COMPLETED",
+            "bg-color"   => "danger",
+            "font-color" => "text-white",
+            "title"      => "Completed",
+            "count"      => $count['completed']
+        ],
     ],
     "human_resource" => [
         [

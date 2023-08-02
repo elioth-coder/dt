@@ -1,7 +1,5 @@
 var formElements = [
     department_name,
-    submit,
-    reset
 ];
 
 function disableForm() {
@@ -12,9 +10,9 @@ function enableForm() {
     formElements.forEach(element => element.removeAttribute('disabled'));
 }
 
-departmentForm.onsubmit = async (e) => {
+NewDepartmentForm.onsubmit = async (e) => {
     e.preventDefault();
-    let formData = new FormData(departmentForm);
+    let formData = new FormData(NewDepartmentForm);
 
     let options = {
         container: AlertContainer,
@@ -72,16 +70,6 @@ departmentForm.onsubmit = async (e) => {
             enableForm();
         });
     }
-}
-
-cancel.onclick = () => {
-    reset.style = '';
-    reset.click();
-    department_id.value = '';
-    clearDepartmentProfile();
-    cancel.style.display = 'none';
-
-    FormModal.querySelector('.btn-close').click();
 }
 
 CameraButton.onclick = () => {
@@ -317,132 +305,9 @@ function editDepartment(id) {
     department_id.value = department.id;
     department_name.value = department.name;
 
-    cancel.style = '';
-    reset.style.display = 'none';
     ClearDepartmentProfile.style.display = 'block';
 
-    OpenModalButton.click();
-}
-
-async function fetchDepartments() {
-    let response = await fetch('read.php');
-    let { rows } = await response.json();
-
-    return rows;
-}
-
-async function searchDepartments(q) {
-    let response = await fetch('search.php?q=' + q);
-    let { rows } = await response.json();
-
-    return rows;
-}
-
-function populateDepartmentsTable(departments) {
-    let tbody = DepartmentsTable.querySelector('tbody');
-    let content = "";
-
-    if (departments.length) {
-        departments.forEach(department => {
-            content += [
-                `<tr>`,
-                `<td style="width: 40px;" class="text-center">`,
-                `    <input onchange="selectRow(this);" value="${department.id}" `,
-                `        class="form-check-input" type="checkbox" />`,
-                `</td>`,
-                `<td style="width: 160px;" class="text-center">`,
-                `    <button onclick="editDepartment(${department.id})" class="btn btn-outline-success">`,
-                `        <i class="bi-pencil-fill"></i>`,
-                `    </button>`,
-                `    <button onclick="deleteDepartment(${department.id})" class="btn btn-outline-danger">`,
-                `        <i class="bi-trash-fill"></i>`,
-                `    </button>`,
-                `</td>`,
-                `<td class="text-end">${department.id}</td>`,
-                `<td class="text-center">`,
-                `    <img onclick="viewImage('../upload/${department.profile}');" class="rounded-circle" style="cursor: pointer; height: 50px; width: 50px;" src="../upload/${department.profile}" />`,
-                `</td>`,
-                `<td>${department.name}</td>`,
-                `<td class="text-center">`,
-                `   <a href="#" onclick="showMembersModal(${department.id});">${department.members}</a>`,
-                `</td>`,
-                `</tr>`,
-            ].join("\n");
-        });
-    } else {
-        content += `
-            <tr><td colspan="5" class="text-center">No data found</td></tr>
-        `;
-    }
-
-    tbody.innerHTML = content;
-}
-
-function selectRow(checkbox) {
-    if(checkbox.checked) {
-        selectedRows.push(checkbox.value);
-    } else {
-        let index = selectedRows.indexOf(checkbox.value);
-        selectedRows.splice(index, 1);
-    }
-
-    if(selectedRows.length) {
-        DeleteSelected.style.display = 'inline-block';
-    } else {
-        DeleteSelected.style.display = 'none';
-    }
-}
-
-CheckAll.onclick = () => {
-    let checkboxes = DepartmentsTable.querySelectorAll('input[type="checkbox"]');
-    let isChecked = CheckAll.checked;
-
-    if(isChecked) {
-        checkboxes.forEach(c => {
-            if(!c.checked) c.click();
-        });    
-    } else {
-        checkboxes.forEach(c => {
-            if(c.checked) c.click();
-        });    
-    }
-}
-
-DeleteSelected.onclick = () => {
-    Swal.fire({
-        icon: 'warning',
-        title: 'Do you want to delete all the selected departments?',
-        showDenyButton: true,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            DeleteSelected.setAttribute('disabled', true);
-            let options = {
-                container: ToastContainer,
-                message: [
-                    `<img class='me-2' style='height: 20px;' src='../assets/images/spinner.gif' />`,
-                    ` Deleting selected departments...`,
-                ].join("\n")
-            };
-            let toastWrapper = appendToast(options);
-            let response = await fetch('delete-multiple.php?id=' + selectedRows.join(","));
-            let { status, message } = await response.json();
-
-            toastWrapper.remove();
-            Swal.fire({
-                icon: status,
-                title: message
-            });
-
-            if (status == 'success') {
-                departments = await fetchDepartments();
-                populateDepartmentsTable(departments);
-                DeleteSelected.style.display = 'none';
-            }
-            DeleteSelected.removeAttribute('disabled');
-        }
-    });
+    NewDepartmentModalButton.click();
 }
 
 function logout() {
@@ -460,21 +325,19 @@ function logout() {
     });
 }
 
-search.onkeyup = async (e) => {
-    let q = e.target.value;
-    
-    departments = await searchDepartments(q);
-    populateDepartmentsTable(departments);
-}
-
-cancel.style.display = 'none';
 ClearDepartmentProfile.style.display = 'none';
-DeleteSelected.style.display = 'none';
 
-var selectedRows = [];
-var departments = [];
-
-(async () => {
-    departments = await fetchDepartments();
-    populateDepartmentsTable(departments);
-})();
+$(document).ready( function () {
+    $('#DataTableDepartment').DataTable({
+        paging: false,
+        scrollCollapse: true,
+        scrollY: '50vh',
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'pdf', 'print'
+        ],
+        language: {
+            emptyTable: "No results found."
+        }
+    });
+} );

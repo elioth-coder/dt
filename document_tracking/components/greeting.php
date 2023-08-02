@@ -1,4 +1,4 @@
-<div class="p-3">
+<div class="px-3">
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
         <strong>Howdy, 
             <img style="height: 30px; margin-top: -10px;" 

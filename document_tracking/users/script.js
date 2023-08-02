@@ -9,8 +9,6 @@ var formElements = [
     password,
     email,
     birthday,
-    submit,
-    reset
 ];
 
 function disableForm() {
@@ -21,9 +19,9 @@ function enableForm() {
     formElements.forEach(element => element.removeAttribute('disabled'));
 }
 
-userForm.onsubmit = async (e) => {
+NewUserForm.onsubmit = async (e) => {
     e.preventDefault();
-    let formData = new FormData(userForm);
+    let formData = new FormData(NewUserForm);
 
     let options = {
         container: AlertContainer,
@@ -81,17 +79,6 @@ userForm.onsubmit = async (e) => {
             enableForm();
         });
     }
-}
-
-cancel.onclick = () => {
-    reset.style = '';
-    reset.click();
-    password.removeAttribute('disabled');
-    user_id.value = '';
-    clearUserProfile();
-    cancel.style.display = 'none';
-
-    FormModal.querySelector('.btn-close').click();
 }
 
 CameraButton.onclick = () => {
@@ -387,135 +374,9 @@ function editUser(id) {
     user_id.value = user.id;
     email.value = user.email;
     birthday.value = user.birthday;
-    cancel.style = '';
-    reset.style.display = 'none';
     ClearUserProfile.style.display = 'block';
 
-    OpenModalButton.click();
-}
-
-async function fetchUsers() {
-    let response = await fetch('read.php');
-    let { rows } = await response.json();
-
-    return rows;
-}
-
-async function searchUsers(q) {
-    let response = await fetch('search.php?q=' + q);
-    let { rows } = await response.json();
-
-    return rows;
-}
-
-function populateUsersTable(users) {
-    let tbody = UsersTable.querySelector('tbody');
-    let content = "";
-
-    if (users.length) {
-        users.forEach(user => {
-            content += [
-                `<tr>`,
-                `<td style="width: 40px;" class="text-center">`,
-                `    <input onchange="selectRow(this);" value="${user.id}" `,
-                `        class="form-check-input" type="checkbox" />`,
-                `</td>`,
-                `<td style="width: 160px;" class="text-center">`,
-                `    <button onclick="editPassword(${user.id})" class="btn btn-outline-warning">`,
-                `        <i class="bi-key-fill"></i>`,
-                `    </button>`,
-                `    <button onclick="editUser(${user.id})" class="btn btn-outline-success">`,
-                `        <i class="bi-pencil-fill"></i>`,
-                `    </button>`,
-                `    <button onclick="deleteUser(${user.id})" class="btn btn-outline-danger">`,
-                `        <i class="bi-trash-fill"></i>`,
-                `    </button>`,
-                `</td>`,
-                `<td class="text-end">${user.id}</td>`,
-                `<td class="text-center">`,
-                `    <img onclick="viewImage('../upload/${user.profile}');" class="rounded-circle" style="cursor: pointer; height: 50px; width: 50px;" src="../upload/${user.profile}" />`,
-                `</td>`,
-                `<td>${user.first_name} ${user.last_name}</td>`,
-                `<td>${user.gender}</td>`,
-                `<td>${user.username}</td>`,
-                `<td>${user.role}</td>`,
-                `</tr>`,
-            ].join("\n");
-        });
-    } else {
-        content += `
-            <tr><td colspan="8" class="text-center">No data found</td></tr>
-        `;
-    }
-
-    tbody.innerHTML = content;
-}
-
-function selectRow(checkbox) {
-    if(checkbox.checked) {
-        selectedRows.push(checkbox.value);
-    } else {
-        let index = selectedRows.indexOf(checkbox.value);
-        selectedRows.splice(index, 1);
-    }
-
-    if(selectedRows.length) {
-        DeleteSelected.style.display = 'inline-block';
-    } else {
-        DeleteSelected.style.display = 'none';
-    }
-}
-
-CheckAll.onclick = () => {
-    let checkboxes = UsersTable.querySelectorAll('input[type="checkbox"]');
-    let isChecked = CheckAll.checked;
-
-    if(isChecked) {
-        checkboxes.forEach(c => {
-            if(!c.checked) c.click();
-        });    
-    } else {
-        checkboxes.forEach(c => {
-            if(c.checked) c.click();
-        });    
-    }
-}
-
-DeleteSelected.onclick = () => {
-    Swal.fire({
-        icon: 'warning',
-        title: 'Do you want to delete all the selected users?',
-        showDenyButton: true,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            DeleteSelected.setAttribute('disabled', true);
-            let options = {
-                container: ToastContainer,
-                message: [
-                    `<img class='me-2' style='height: 20px;' src='../assets/images/spinner.gif' />`,
-                    ` Deleting selected users...`,
-                ].join("\n")
-            };
-            let toastWrapper = appendToast(options);
-            let response = await fetch('delete-multiple.php?id=' + selectedRows.join(","));
-            let { status, message } = await response.json();
-
-            toastWrapper.remove();
-            Swal.fire({
-                icon: status,
-                title: message
-            });
-
-            if (status == 'success') {
-                users = await fetchUsers();
-                populateUsersTable(users);
-                DeleteSelected.style.display = 'none';
-            }
-            DeleteSelected.removeAttribute('disabled');
-        }
-    });
+    NewUserModalButton.click();
 }
 
 function logout() {
@@ -533,21 +394,19 @@ function logout() {
     });
 }
 
-search.onkeyup = async (e) => {
-    let q = e.target.value;
-    
-    users = await searchUsers(q);
-    populateUsersTable(users);
-}
-
-cancel.style.display = 'none';
 ClearUserProfile.style.display = 'none';
-DeleteSelected.style.display = 'none';
 
-var selectedRows = [];
-var users = [];
-
-(async () => {
-    users = await fetchUsers();
-    populateUsersTable(users);
-})();
+$(document).ready( function () {
+    $('#DataTableUser').DataTable({
+        paging: false,
+        scrollCollapse: true,
+        scrollY: '50vh',
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'pdf', 'print'
+        ],
+        language: {
+            emptyTable: "No results found."
+        }
+    });
+} );
