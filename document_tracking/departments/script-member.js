@@ -16,8 +16,7 @@ async function fetchMembers(departmentId, selected=true) {
 
 
 async function showMembersModal(departmentId) {
-    SearchMembers.setAttribute('department_id', departmentId);
-    departmentMembersModal.show();
+    memberModal.show();
     let selectedMembers  = await fetchMembers(departmentId);
     let availableMembers = await fetchMembers(departmentId, false);
 
@@ -25,10 +24,10 @@ async function showMembersModal(departmentId) {
     populateSelectedMembersTable(departmentId, selectedMembers);
 }
 
-const departmentMembersModal = new bootstrap.Modal('#DepartmentMembersModal');
+const memberModal = new bootstrap.Modal('#MemberModal');
 
-DepartmentMembersModal.addEventListener('hide.bs.modal', async event => {
-    DepartmentMembersModalForm.querySelector('table tbody').innerHTML = "";
+MemberModal.addEventListener('hide.bs.modal', async event => {
+    MemberModalForm.querySelector('table tbody').innerHTML = "";
 });
 
 async function addDepartmentMember(button, departmentId, memberId) {
@@ -102,17 +101,13 @@ function populateAvailableMembersTable(departmentId, members) {
             `       <img onclick="viewImage('../upload/${member.profile}');" class="rounded-circle" style="cursor: pointer; height: 50px; width: 50px;" src="../upload/${member.profile}" />`,
             `   </td>`,
             `   <td>${member.full_name}</td>`,
-            `   <td class="text-center fs-4 text-${member.gender=='MALE' ? 'primary' : 'danger'}"`,
-            `       style="width: 60px;"`,
-            `       title="${member.gender}">`,
-            `       <i class="bi bi-gender-${member.gender.toLowerCase()}"></i>`,
-            `   </td>`,
+            `   <td>${member.gender}</td>`,
             `   <td class="text-center">`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-secondary">`,
             `           <img src="../assets/images/loader.gif" style="height: 16px; margin-top: -5px;" />`,
             `       </button>`,
-            `       <button type="button" onclick="addDepartmentMember(this, ${departmentId},${member.id});" class="btn btn-outline-primary">`,
-            `           <i class="bi bi-plus-lg"></i>`,
+            `       <button type="button" onclick="addDepartmentMember(this, ${departmentId},${member.id});" class="btn btn-outline-success">`,
+            `           <i class="bi bi-box-arrow-in-right"></i>`,
             `       </button>`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-success">`,
             `           <i class="bi bi-check-lg"></i>`,
@@ -143,16 +138,12 @@ function populateSelectedMembersTable(departmentId, members) {
             `       <img onclick="viewImage('../upload/${member.profile}');" class="rounded-circle" style="cursor: pointer; height: 50px; width: 50px;" src="../upload/${member.profile}" />`,
             `   </td>`,
             `   <td>${member.full_name}</td>`,
-            `   <td class="text-center fs-4 text-${member.gender=='MALE' ? 'primary' : 'danger'}"`,
-            `       style="width: 60px;"`,
-            `       title="${member.gender}">`,
-            `       <i class="bi bi-gender-${member.gender.toLowerCase()}"></i>`,
-            `   </td>`,
+            `   <td>${member.gender}</td>`,
             `   <td class="text-center">`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-secondary">`,
             `           <img src="../assets/images/loader.gif" style="height: 16px; margin-top: -5px;" />`,
             `       </button>`,
-            `       <button type="button" onclick="removeDepartmentMember(this, ${departmentId},${member.id});" class="btn btn-outline-primary">`,
+            `       <button type="button" onclick="removeDepartmentMember(this, ${departmentId},${member.id});" class="btn btn-outline-danger">`,
             `           <i class="bi bi-trash-fill"></i>`,
             `       </button>`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-success">`,
@@ -175,7 +166,7 @@ function populateSelectedMembersTable(departmentId, members) {
 
 async function setMembers(departmentId) {
     departmentModal.hide();
-    departmentMembersModal.show();
+    memberModal.show();
     SearchMembers.setAttribute('department_id', departmentId);
     let members = await searchMembers(departmentId);
     populateAvailableMembersTable(departmentId, members);

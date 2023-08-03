@@ -14,8 +14,9 @@ async function fetchTasks(projectId, selected=true) {
     return rows;
 }
 
+
 async function showTasksModal(projectId) {
-    projectTasksModal.show();
+    taskModal.show();
     let selectedTasks  = await fetchTasks(projectId);
     let availableTasks = await fetchTasks(projectId, false);
 
@@ -23,10 +24,10 @@ async function showTasksModal(projectId) {
     populateSelectedTasksTable(projectId, selectedTasks);
 }
 
-const projectTasksModal = new bootstrap.Modal('#ProjectTasksModal');
+const taskModal = new bootstrap.Modal('#TaskModal');
 
-ProjectTasksModal.addEventListener('hide.bs.modal', async event => {
-    ProjectTasksModalForm.querySelector('table tbody').innerHTML = "";
+TaskModal.addEventListener('hide.bs.modal', async event => {
+    TaskModalForm.querySelector('table tbody').innerHTML = "";
 });
 
 async function addProjectTask(button, projectId, taskId) {
@@ -97,15 +98,13 @@ function populateAvailableTasksTable(projectId, tasks) {
             `<tr>`,
             `   <td class="text-center">${task.id}</td>`,
             `   <td>${task.name}</td>`,
-            `<td class="">`,
-            `   <span class="badge text-bg-${STATUS_COLOR2[task.status]}">${task.status}</span>`,
-            `</td>`,
+            `   <td class="text-center">${task.status}</td>`,
             `   <td class="text-center">`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-secondary">`,
             `           <img src="../assets/images/loader.gif" style="height: 16px; margin-top: -5px;" />`,
             `       </button>`,
-            `       <button type="button" onclick="addProjectTask(this, ${projectId},${task.id});" class="btn btn-outline-primary">`,
-            `           <i class="bi bi-plus-lg"></i>`,
+            `       <button type="button" onclick="addProjectTask(this, ${projectId},${task.id});" class="btn btn-outline-success">`,
+            `           <i class="bi bi-box-arrow-in-right"></i>`,
             `       </button>`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-success">`,
             `           <i class="bi bi-check-lg"></i>`,
@@ -133,14 +132,12 @@ function populateSelectedTasksTable(projectId, tasks) {
             `<tr>`,
             `   <td class="text-center">${task.id}</td>`,
             `   <td>${task.name}</td>`,
-            `   <td class="">`,
-            `       <span class="badge text-bg-${STATUS_COLOR2[task.status]}">${task.status}</span>`,
-            `   </td>`,
+            `   <td class="text-center">${task.status}</td>`,
             `   <td class="text-center">`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-secondary">`,
             `           <img src="../assets/images/loader.gif" style="height: 16px; margin-top: -5px;" />`,
             `       </button>`,
-            `       <button type="button" onclick="removeProjectTask(this, ${projectId},${task.id});" class="btn btn-outline-primary">`,
+            `       <button type="button" onclick="removeProjectTask(this, ${projectId},${task.id});" class="btn btn-outline-danger">`,
             `           <i class="bi bi-trash-fill"></i>`,
             `       </button>`,
             `       <button type="button" disabled style="display: none;" class="btn btn-outline-success">`,
@@ -163,7 +160,7 @@ function populateSelectedTasksTable(projectId, tasks) {
 
 async function setTasks(projectId) {
     projectModal.hide();
-    projectTasksModal.show();
+    taskModal.show();
     SearchTasks.setAttribute('project_id', projectId);
     let tasks = await searchTasks(projectId);
     populateAvailableTasksTable(projectId, tasks);

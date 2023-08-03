@@ -32,8 +32,8 @@ try {
                 ON DH.id = DD.document_history_id 
             LEFT JOIN department DT 
                 ON DD.department_id = DT.id 
-            WHERE D.datetime BETWEEN :from AND :to
-                ";
+        WHERE D.datetime BETWEEN :from AND :to
+    ";
 
     if(!empty($_POST['department_id'])) {
         $sql .= " AND D.department_id = :department_id";
@@ -61,14 +61,12 @@ try {
     }
 
     $response = [ 
-        "message"    => "Fetched rows successfully!",
-        "rows"       => $rows,
-        "department" => (!empty($_POST['department'])) ? $_POST['department'] : "",
-        "docxtype"   => (!empty($_POST['doctype'])) ? $_POST['doctype'] : "",
-        "start_date" => $_POST['from'],
-        "end_date"   => $_POST['to'],
-        "user"       => $_SESSION['user'],
-        "status"     => "success"
+        "message" => "Fetched rows successfully!",
+        "rows"    => $rows,
+        "from"    => $_POST['from'],
+        "to"      => $_POST['to'],
+        "user"    => $_SESSION['user'],
+        "status"  => "success"
     ];
     echo json_encode($response);
 } catch (PDOException $e) {

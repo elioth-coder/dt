@@ -2,7 +2,15 @@ var formElements = [
     document_name,
     document_type,
     remarks,
+    submit,
+    reset
 ];
+
+var BACKGROUNDS = {
+    'RECEIVED'  : "bg-success",
+    'SENT'      : "bg-info",
+    'FORWARDED' : "bg-warning",
+};
 
 function disableForm() {
     formElements.forEach(element => element.setAttribute('disabled', true));
@@ -70,9 +78,9 @@ ForwardDocumentForm.onsubmit = async (e) => {
     }
 }
 
-NewDocumentForm.onsubmit = async (e) => {
+documentForm.onsubmit = async (e) => {
     e.preventDefault();
-    let formData = new FormData(NewDocumentForm);
+    let formData = new FormData(documentForm);
 
     let options = {
         container: AlertContainer,
@@ -132,7 +140,41 @@ NewDocumentForm.onsubmit = async (e) => {
     }
 }
 
-const forwardDocumentModal = new bootstrap.Modal('#ForwardDocumentModal', {
+function deleteDocument(id) {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Do you want to delete this document?',
+        showDenyButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            let options = {
+                container: ToastContainer,
+                message: [
+                    `<img class='me-2' style='height: 20px;' src='../assets/images/spinner.gif' />`,
+                    ` Deleting document...`,
+                ].join("\n")
+            };
+            let toastWrapper = appendToast(options);
+            let response = await fetch('delete.php?id=' + id);
+            let { status, message } = await response.json();
+
+            toastWrapper.remove();
+            Swal.fire({
+                icon: status,
+                title: message
+            });
+
+            if (status == 'success') {
+                documents = await fetchDocuments();
+                populateDocumentsTable(documents);
+            }
+        }
+    })
+}
+
+const forwardModal = new bootstrap.Modal('#ForwardModal', {
     keyboard: false
 });
 
@@ -141,7 +183,7 @@ async function forwardDocument(doc) {
 
     ForwardDocumentForm.querySelector('input[name="document_id"]').value = doc.id;
     ForwardDocumentForm.querySelector('input[name="department_id"]').value = department_id;
-    forwardDocumentModal.show();
+    forwardModal.show();
 }
 
 const documentHistoryModal = new bootstrap.Modal('#DocumentHistoryModal', {
@@ -161,64 +203,54 @@ async function viewDocumentHistory(doc) {
                     ?   row.department 
                     :   row.user_department;
 
-            let from = row.actor_department;
-            let to   = (['SENT','FORWARDED'].includes(row.status)) ? department : "";
-            
             tbodyContent += [
                 `<tr>`,
                 `<td class="position-relative" style="width: 50px; border-right: 2px solid #0D6EFD">`,
-                `   <div class="${(row.status=='RECEIVED') ? 'bg-primary' : 'bg-secondary-subtle'} position-absolute end-0 rounded-circle" `,
+                `   <div class="bg-secondary-subtle position-absolute end-0 rounded-circle" `,
                 `       style="border: 2px solid #0D6EFD; margin-right: -16px; width: 30px; height: 30px;"></div>`,
                 `</td>`,
                 `<td style="width: 50px;"></td>`,
-                `<td class="text-end" style="width: 175px;">${row.datetime}</td>`,
-                `<td class="">`,
-                `   <span class="badge text-bg-${STATUS_COLOR[row.status]}">${row.status}</span>`,
+                `<td style="width: 190px;" class="text-center">${row.datetime}</td>`,
+                `<td style="width: 170px;" class="text-center">`,
+                `   <span class="fs-6 p-2 d-block w-100 badge ${BACKGROUNDS[row.status]}">${row.status}</span>`,
                 `</td>`,
-                `<td class="">${from}</td>`,
-                `<td class="">${to}</td>`,
-                `<td class="">[${row.actor}]: <pre>${row.remarks}</pre></td>`,
+                `<td class="text-center">${department}</td>`,
+                `<td>${row.remarks}</td>`,
+                `<td>${row.actor_department}<br> - ${row.actor}</td>`,
                 `</tr>`,
             ].join("\n");
         });
 
         let table = [
-            `<div class="overflow-y-scroll" style="max-height: 50vh;">`,
-            `<table class="position-relative table table-striped table-bordered">`,
+            `<table class="table table-striped table-bordered">`,
             `   <thead>`,
             `   <tr>`,
-            `   <td class="bg-white" style="position: sticky; top: 0; width: 50px; border-right: 2px solid #0D6EFD"></td><td></td>`,
-            `   <th style="position: sticky; top: 0;" class="bg-white text-center text-primary">DATETIME</th>`,
-            `   <th style="position: sticky; top: 0;" class="bg-white text-center text-primary">STATUS</th>`,
-            `   <th style="position: sticky; top: 0;" class="bg-white text-center text-primary">FROM</th>`,
-            `   <th style="position: sticky; top: 0;" class="bg-white text-primary">TO</th>`,
-            `   <th style="position: sticky; top: 0;" class="bg-white text-primary">REMARKS</th>`,
+            `   <td class="position-relative" style="width: 50px; border-right: 2px solid #0D6EFD"></td><td></td>`,
+            `   <th class="text-center text-primary">DATETIME</th>`,
+            `   <th class="text-center text-primary">STATUS</th>`,
+            `   <th class="text-center text-primary">DEPARTMENT</th>`,
+            `   <th class="text-primary">REMARKS</th>`,
+            `   <th class="text-primary">BY</th>`,
             `   </tr>`,
             `   </thead>`,
             `   <tbody>`,
                     tbodyContent,
             `   <tbody>`,
             `</table>`,
-            `</div>`,
         ].join("\n");
 
         let modalBodyContent = [
-            `<table class="table table-bordered mb-0">`,
+            `<table class="table table-bordered">`,
             `<tr>`,
-            `   <th style="width: 100px;" class="fs-1 bg-primary text-white text-center align-middle">`,
-            `       <i class="bi bi-file-earmark-richtext"></i>`,
-            `   </th>`,
+            `   <th style="width: 190px;" class="bg-primary text-white text-center align-middle">DOCUMENT</th>`,
             `   <td>`,
-            `       <h5 class="">${doc.document_name}</h5>`,
-            `       <span class="badge text-bg-${DOCTYPE_COLOR[doc.document_type]} p-2">${doc.document_type}</span><br>`,
+            `       <h4 class="text-primary">${doc.document_name}</h4>`,
+            `       <span class="mt-2 badge bg-primary p-2">${doc.document_type}</span><br>`,
             `       <i>Created by: ${creator.first_name} ${creator.last_name} - ${creator.department.name}</i>`,
-            `       <img class="position-absolute m-4 top-0 end-0"`,
-            `           style="height: 80px; opacity: 0.50;"`,
-            `           src="../assets/favicon/android-chrome-192x192.png"`,
-            `       />`,
             `   </td>`,
             `</tr>`,    
             `</table>`,
+            `<hr>`,
             table,
         ].join("\n");
         
@@ -282,6 +314,56 @@ async function receiveDocument(doc) {
     }
 }
 
+
+async function fetchDocuments() {
+    let response = await fetch('read.php');
+    let { rows } = await response.json();
+
+    return rows;
+}
+
+async function searchDocuments(q) {
+    let response = await fetch('search.php?q=' + q);
+    let { rows } = await response.json();
+
+    return rows;
+}
+
+function populateDocumentsTable(documents) {
+    let tbody = DocumentsTable.querySelector('tbody');
+    let content = "";
+
+    if (documents.length) {
+        documents.forEach(document => {
+            content += [
+                `<tr>`,
+                `<td style="width: 190px;" class="text-center">${document.datetime}</td>`,
+                `<td style="width: 170px;" class="text-center">`,
+                `   <span class="fs-6 p-2 d-block w-100 badge ${BACKGROUNDS[document.status]}">${document.status}</span>`,
+                `</td>`,
+                `<td>`,
+                `   <h4>${document.name}</h4>`,
+                `   <span class="mt-2 badge bg-primary p-2">${document.document_type}</span><br>`,
+                `</td>`,
+                `<td style="width: 140px;" class="text-center">`,
+                `   <button data-bs-toggle="tooltip" data-bs-placement="top"`,
+                `       data-bs-title="View"`,
+                `       onclick='viewDocumentHistory(${JSON.stringify(document)});' class="btn btn-outline-info">`,
+                `       <i class="bi bi-eye-fill"></i>`,
+                `   </button>`,
+                `</tr>`,
+            ].join("\n");
+        });
+    } else {
+        content += `
+            <tr><td colspan="4" class="text-center">No data found</td></tr>
+        `;
+    }
+
+    tbody.innerHTML = content;
+    triggerTooltips();
+}
+
 function logout() {
     Swal.fire({
         html: [
@@ -297,25 +379,14 @@ function logout() {
     });
 }
 
-function triggerTooltips() { 
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-}
+if (document.getElementById('search')) {
+    search.onkeyup = async (e) => {
+        let q = e.target.value;
 
-$(document).ready( function () {
-    $('#DataTableDocument').DataTable({
-        paging: false,
-        scrollCollapse: true,
-        scrollY: '50vh',
-        dom: 'Bfrtip',
-        buttons: [
-            'excel', 'pdf', 'print'
-        ],
-        language: {
-            emptyTable: "No results found."
-        }
-    });
-} );
+        documents = await searchDocuments(q);
+        populateDocumentsTable(documents);
+    }
+}
 
 $(function () {
     $("#receiver").selectize({
@@ -325,5 +396,20 @@ $(function () {
         placeholder: "Type the name of receiver."
     });
 });
+
+function triggerTooltips() { 
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+}
+
+var selectedRows = [];
+var documents = [];
+
+(async () => {
+    if (document.getElementById('DocumentsTable')) {
+        documents = await fetchDocuments();
+        populateDocumentsTable(documents);
+    }
+})();
 
 triggerTooltips();

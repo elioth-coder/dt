@@ -2,7 +2,6 @@
 session_start();
 
 ?>
-<?php $page = "dashboard"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +10,6 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Management System Login</title>
-    <?php require_once "./components/favicons.php"; ?>
     <link rel="stylesheet" href="./assets/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css">
     <style>
         #login {
@@ -38,12 +36,12 @@ session_start();
 
 <body style="background-color: #eee;">
     <div id="header" class="pb-2 bg-primary">
-        <h3 class="text-center text-white">
+        <h2 class="text-center text-white">
             Document Management System
-        </h3>
+        </h2>
     </div>
     <div style="height: calc(100vh - 180px);">
-        <img src="./assets/images/logo.png" style="height: 100px;" 
+        <img src="./assets/images/logo.png" style="height: 120px;" 
             class="border shadow-lg d-block my-3 mx-auto rounded-circle"
         />
         <div id="Timer" class="text-danger text-center"></div>
@@ -60,5 +58,4 @@ session_start();
     <script src="./assets/js/sleep.js"></script>
     <script src="./login.js?t=<?php echo time(); ?>"></script>
 </body>
-
 </html>

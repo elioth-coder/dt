@@ -1,5 +1,5 @@
-rmdir /s /q document_tracking
-git clone https://github.com/elioth-coder/document_tracking.git
+rmdir /s /q dms
+git clone https://github.com/elioth-coder/dms.git document_tracking
 cd document_tracking
 del .gitignore
 rmdir /s /q .git
