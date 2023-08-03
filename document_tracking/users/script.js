@@ -394,7 +394,12 @@ function logout() {
     });
 }
 
-ClearUserProfile.style.display = 'none';
+function triggerTooltips() { 
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+}
+
+triggerTooltips();
 
 $(document).ready( function () {
     $('#DataTableUser').DataTable({
@@ -410,3 +415,5 @@ $(document).ready( function () {
         }
     });
 } );
+
+ClearUserProfile.style.display = 'none';

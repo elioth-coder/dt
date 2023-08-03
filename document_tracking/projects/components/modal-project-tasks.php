@@ -14,7 +14,7 @@
                         <input id="SearchTasks" placeholder="Search available tasks." class="form-control" type="search" name="">
                     </section>
                     <div style="box-sizing: border-box; width: 50%; float: left;">
-                        <h3 class="text-center">Available Tasks</h3>
+                        <h3 class="text-center text-secondary">Available Tasks</h3>
                         <div class="overflow-y-scroll" style="max-height: 50vh;">
                             <table id="TasksTable" class="table table-striped border">
                                 <thead class="text-primary">
@@ -23,7 +23,7 @@
                                         <th style="position: sticky; top: 0;" class="bg-white text-center">TASK</th>
                                         <th style="position: sticky; top: 0;" class="bg-white ">STATUS</th>
                                         <th style="position: sticky; top: 0;" class="bg-white text-center">
-                                            <i class="bi bi-box-arrow-in-right"></i>
+                                            <i class="bi bi-plus-lg"></i>
                                         </th>
                                     </tr>
                                 </thead>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div style="box-sizing: border-box; width: 50%; float: left;">
-                        <h3 class="text-center">Project Tasks</h3>
+                        <h3 class="text-center text-secondary">Project Tasks</h3>
                         <div class="overflow-y-scroll" style="max-height: 50vh;">
                             <table id="SelectedTasksTable" class="table table-striped border">
                                 <thead class="text-primary">

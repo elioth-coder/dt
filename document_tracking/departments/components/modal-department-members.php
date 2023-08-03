@@ -14,7 +14,7 @@
                         <input id="SearchMembers" placeholder="Search available members." class="form-control" type="search" name="">
                     </section>
                     <div style="box-sizing: border-box; width: 50%; float: left;">
-                        <h3 class="text-center">Available Members</h3>
+                        <h3 class="text-center text-secondary">Available Members</h3>
                         <div class="overflow-y-scroll" style="max-height: 50vh;">
                             <table id="MembersTable" class="table table-striped border">
                                 <thead class="text-primary">
@@ -24,7 +24,7 @@
                                         <th style="position: sticky; top: 0;" class="bg-white">FULL NAME</th>
                                         <th style="position: sticky; top: 0;" class="bg-white">GENDER</th>
                                         <th style="position: sticky; top: 0;" class="bg-white text-center">
-                                            <i class="bi bi-box-arrow-in-right"></i>
+                                            <i class="bi bi-plus-lg"></i>
                                         </th>
                                     </tr>
                                 </thead>
@@ -33,16 +33,16 @@
                         </div>
                     </div>
                     <div style="box-sizing: border-box; width: 50%; float: left;">
-                        <h3 class="text-center">Department Members</h3>
+                        <h3 class="text-center text-secondary">Department Members</h3>
                         <div class="overflow-y-scroll" style="max-height: 50vh;">
                             <table id="SelectedMembersTable" class="table table-striped border">
                                 <thead class="text-primary">
                                     <tr>
-                                        <th style="position: sticky; top: 0;" class="bg-whitetext-center">ID</th>
-                                        <th style="position: sticky; top: 0;" class="bg-whitetext-center">PROFILE</th>
+                                        <th style="position: sticky; top: 0;" class="bg-white text-center">ID</th>
+                                        <th style="position: sticky; top: 0;" class="bg-white text-center">PROFILE</th>
                                         <th style="position: sticky; top: 0;" class="bg-white">FULL NAME</th>
                                         <th style="position: sticky; top: 0;" class="bg-white">GENDER</th>
-                                        <th style="position: sticky; top: 0;" class="bg-whitetext-center">
+                                        <th style="position: sticky; top: 0;" class="bg-white text-center">
                                             <i class="bi bi-trash-fill"></i>
                                         </th>
                                     </tr>
@@ -54,7 +54,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -99,6 +99,8 @@ try {
     <script src="../assets/selectize-0.15.2/selectize.min.js"></script>
     <script>
         const STATUS_COLOR  = <?php echo json_encode($STATUS_COLOR); ?>;
+        <?php require_once "../components/colors-task.php"; ?>
+        const STATUS_COLOR2 = <?php echo json_encode($STATUS_COLOR); ?>;
     </script>
     <script src="./script.js?t=<?php echo time(); ?>"></script>
     <script src="./script-task.js?t=<?php echo time(); ?>"></script>

@@ -23,14 +23,14 @@
                     <td class="text-center">
                         <button class="btn btn-outline-primary" 
                             onclick="showTasksModal(<?php echo $row['id']; ?>);" 
-                            data-bs-title="Add tasks" 
+                            data-bs-title="Set Tasks" 
                             data-bs-toggle="tooltip" 
                             data-bs-placement="top">
                             <i class="bi bi-list-task"></i>
                         </button>
                         <a class="btn btn-outline-primary" 
                             href="./view.php?project_id=<?php echo $row['id']; ?>" 
-                            data-bs-title="View project" 
+                            data-bs-title="View Project" 
                             data-bs-toggle="tooltip" 
                             data-bs-placement="top">
                             <i class="bi bi-eye-fill"></i>

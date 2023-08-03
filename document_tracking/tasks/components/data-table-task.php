@@ -4,6 +4,9 @@
             <th class="text-center">ACTION</th>
             <th class="text-center">DATETIME</th>
             <th class="text-center">STATUS</th>
+            <th class="text-center">
+                <i class="bi bi-file-earmark-text"></i>
+            </th>
             <th class="text-center">TASK</th>
         </tr>
     </thead>
@@ -89,8 +92,7 @@
                                 <?php echo $row['status']; ?>
                             </span>
                         </td>
-                        <td>
-                            <p><?php echo $row['task_name']; ?></p>
+                        <td class="text-center">
                             <?php
                             $stmt_1 = $conn->prepare("
                                 SELECT * FROM task_history_files 
@@ -98,21 +100,33 @@
                             ");
                             $stmt_1->execute(["task_id" => $row['id']]);
 
-                            if ($stmt_1->rowCount() > 0) { ?>
-                                <p>[Attachments]:
-                                    <?php
-                                    while ($attachment = $stmt_1->fetch(PDO::FETCH_ASSOC)) { ?>
-                                        <a href="./files/<?php echo $attachment['generated_name']; ?>">
-                                            <?php echo $attachment['filename']; ?>
-                                        </a>,
-                                    <?php
-                                    } // end of while..
-                                    ?>
-                                </p>
+                            if ($stmt_1->rowCount() > 0) { 
+                                $content = "<ul>";
+                                while ($attachment = $stmt_1->fetch(PDO::FETCH_ASSOC)) { 
+                                    $content .= 
+                                        "<li>" .
+                                            "<a target='_blank' href='./files/" . $attachment['generated_name'] . "'>"
+                                                . $attachment['filename'] . 
+                                            "</a>" . 
+                                        "</li>";
+                                } // end of while..
+                                $content .= "</ul>"
+                                ?>
+                                <a href="#" 
+                                    data-bs-toggle="popover" 
+                                    data-bs-trigger="focus" 
+                                    data-bs-placement="top" 
+                                    data-bs-html="true"
+                                    data-bs-title="<?php echo $stmt_1->rowCount(); ?> file attachment(s)."
+                                    data-bs-content="<?php echo $content; ?>">
+                                    <i class="bi bi-file-earmark-text"></i>(<?php echo $stmt_1->rowCount(); ?>)
+                                </a>
+                                
                             <?php
                             } // end of if...
                             ?>
                         </td>
+                        <td><p><?php echo $row['task_name']; ?></p></td>
                     </tr>
                 <?php
                 }

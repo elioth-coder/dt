@@ -29,7 +29,7 @@
                     }
 
                     if($stmt->rowCount() <= 0) { ?>
-                        <p class="text-center text-secondary-subtle">No tasks found.</p>
+                        <p class="text-center text-white">No tasks found.</p>
                     <?php
                     }
                     while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>

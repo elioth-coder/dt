@@ -101,6 +101,8 @@ function triggerTooltips() {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 }
 
+triggerTooltips();
+
 $(document).ready( function () {
     $('#DataTableProject').DataTable({
         paging: false,
@@ -115,5 +117,3 @@ $(document).ready( function () {
         }
     });
 } );
-
-triggerTooltips();

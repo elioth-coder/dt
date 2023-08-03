@@ -35,7 +35,7 @@ async function viewTaskHistory(task) {
                 `<td>`,
                 `   [${row.actor}]: <pre>${row.remarks}</pre>`,
                 (row.attachments.length) 
-                    ? `<p>[Attachments]: ${row.attachments.map(file => `<a target="_blank" href="./files/${file.generated_name}" download="${file.filename}">${file.filename}</a>`).join(", ")}</p>` 
+                    ? `<span>[Attachments]:</span> <ul>${row.attachments.map(file => `<li><a target="_blank" href="./files/${file.generated_name}" download="${file.filename}">${file.filename}</a></li>`).join("")}</ul>` 
                     : "",
                 `</td>`,
                 `</tr>`,

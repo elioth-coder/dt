@@ -51,12 +51,14 @@ include_once "../components/access_settings.php";
         <div class="card m-3">
             <div class="card-body">
                 <div class="text-center">
-                    <h1 class="text-primary">
-                        <?php echo $project['name']; ?>
-                    </h1>
-                    <table class="table table-borderless m-auto table-sm" style="width: 500px;">
+                    <table class="table table-borderless m-auto table-sm w-75">
                         <tbody class="text-start">
                             <tr>
+                            <td rowspan="2" class="align-middle">
+                                <h2 class="text-secondary text-start">
+                                    <?php echo $project['name']; ?>
+                                </h2>
+                            </td>
                             <td class="">Date started: </td>
                             <td>
                                 <span class="badge text-bg-success">

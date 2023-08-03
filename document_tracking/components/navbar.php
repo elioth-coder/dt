@@ -1,14 +1,18 @@
 <nav>
     <section>
         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./"
-            style="text-decoration: none;"
-            class="d-block bg-primary text-center pt-5 pb-4">
+            class="d-block text-decoration-none bg-primary text-center pt-5 pb-4">
             <img src="<?php echo ($page=="dashboard") ? "" : "." ?>./assets/images/logo.png" 
                 class="d-inline-block rounded-circle shadow-lg" style="height: 100px;" />
         </a>
-        <h5 class="m-4 text-primary">Document Management</h5>     
+        <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./"
+            class="d-block fs-5 fw-semibold text-decoration-none m-3 text-primary">
+            <span class="shadow-sm bg-white border m-1 text-secondary fs-4 d-inline-block text-center" style="width: 40px;">D</span>ocument<br>
+            <span class="shadow-sm bg-white border m-1 text-secondary fs-4 d-inline-block text-center" style="width: 40px;">M</span>anagement<br> 
+            <span class="shadow-sm bg-white border m-1 text-secondary fs-4 d-inline-block text-center" style="width: 40px;">S</span>ystem<br>
+        </a>     
     </section>
-    <div class="accordion accordion-flush border-top border-bottom" id="accordionExample">
+    <div class="accordion accordion-flush border-top border-bottom" id="accordionComponent">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button <?php echo (in_array($page, ['documents', 'reports'])) ? "" : "collapsed" ?>" 
@@ -20,18 +24,18 @@
                     Document
                 </button>
             </h2>
-            <div id="collapseOne" data-bs-parent="#accordionExample"
+            <div id="collapseOne" data-bs-parent="#accordionComponent"
                 class="accordion-collapse collapse <?php echo (in_array($page, ['documents', 'reports'])) ? "show" : "" ?>">
                 <div class="accordion-body">
                     <div class="list-group list-group-flush">
                         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./documents/" 
-                            class="list-group-item list-group-item-action list-group-item-success <?php echo ($page=='documents') ? "active" : "" ?>">
+                            class="list-group-item list-group-item-action list-group-item-secondary <?php echo ($page=='documents') ? "active" : "" ?>">
                             <i class="bi bi-geo-alt me-3"></i>
                             Tracking
                         </a>
                         <?php if(in_array('reports', $accessible_pages)) { ?>
                             <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./reports/"
-                                class="list-group-item list-group-item-action list-group-item-success <?php echo ($page=='reports') ? "active" : "" ?>">
+                                class="list-group-item list-group-item-action list-group-item-secondary <?php echo ($page=='reports') ? "active" : "" ?>">
                                 <i class="bi bi-file-earmark-spreadsheet me-3"></i>
                                 Report
                             </a>
@@ -53,18 +57,18 @@
                 </button>
             </h2>
             <div id="collapseTwo" 
-                data-bs-parent="#accordionExample"
+                data-bs-parent="#accordionComponent"
                 class="accordion-collapse collapse <?php echo (in_array($page, ['tasks', 'projects'])) ? "show" : "" ?>">
                 <div class="accordion-body">
                     <div class="list-group list-group-flush">
                         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./tasks/"
-                            class="list-group-item list-group-item-action list-group-item-success <?php echo ($page=='tasks') ? "active" : "" ?>">
+                            class="list-group-item list-group-item-action list-group-item-secondary <?php echo ($page=='tasks') ? "active" : "" ?>">
                             <i class="bi bi-list-task me-3"></i>
                             Tasks
                         </a>
                         <?php if(in_array('projects', $accessible_pages)) { ?>
                             <a  href="<?php echo ($page=="dashboard") ? "" : "." ?>./projects/"
-                                class="list-group-item list-group-item-action list-group-item-success <?php echo ($page=='projects') ? "active" : "" ?>">
+                                class="list-group-item list-group-item-action list-group-item-secondary <?php echo ($page=='projects') ? "active" : "" ?>">
                                 <i class="bi bi-kanban me-3"></i>
                                 Projects
                             </a>
@@ -85,17 +89,17 @@
                 </button>
             </h2>
             <div id="collapseThree" 
-                data-bs-parent="#accordionExample"
+                data-bs-parent="#accordionComponent"
                 class="accordion-collapse collapse <?php echo (in_array($page, ['users', 'departments'])) ? "show" : "" ?>">
                 <div class="accordion-body">
                     <div class="list-group list-group-flush">
                         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./users/" 
-                            class="list-group-item list-group-item-action list-group-item-success <?php echo ($page=='users') ? "active" : "" ?>">
+                            class="list-group-item list-group-item-action list-group-item-secondary <?php echo ($page=='users') ? "active" : "" ?>">
                             <i class="bi bi-person-fill me-3"></i>
                             Users
                         </a>
                         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./departments/" 
-                            class="list-group-item list-group-item-action list-group-item-success <?php echo ($page=='departments') ? "active" : "" ?>">
+                            class="list-group-item list-group-item-action list-group-item-secondary <?php echo ($page=='departments') ? "active" : "" ?>">
                             <i class="bi bi-people-fill me-3"></i>
                             Departments
                         </a>
@@ -117,17 +121,17 @@
                 </button>
             </h2>
             <div id="collapseFour" 
-                data-bs-parent="#accordionExample"
+                data-bs-parent="#accordionComponent"
                 class="accordion-collapse collapse <?php echo ($page=='account') ? "show" : "" ?>">
                 <div class="accordion-body">
                     <div class="list-group list-group-flush">
                         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./account/?tab=profile" 
-                            class="list-group-item list-group-item-action list-group-item-success <?php echo (!empty($_GET['tab'])) ? (($_GET['tab']=='profile') ? "active" : "") : "" ?>">
+                            class="list-group-item list-group-item-action list-group-item-secondary <?php echo (!empty($_GET['tab'])) ? (($_GET['tab']=='profile') ? "active" : "") : "" ?>">
                             <i class="bi bi-person-gear me-3"></i>
                             Profile
                         </a>
                         <a href="<?php echo ($page=="dashboard") ? "" : "." ?>./account/?tab=activity_log" 
-                            class="list-group-item list-group-item-action list-group-item-success <?php echo (!empty($_GET['tab'])) ? (($_GET['tab']=='activity_log') ? "active" : "") : "" ?>">
+                            class="list-group-item list-group-item-action list-group-item-secondary <?php echo (!empty($_GET['tab'])) ? (($_GET['tab']=='activity_log') ? "active" : "") : "" ?>">
                             <i class="bi bi-person-lines-fill me-3"></i>
                             Activity Log
                         </a>
@@ -139,8 +143,8 @@
     <br>
     <div class="d-grid p-3">
         <button onclick="logout();" 
-            class="btn btn-warning">
-            <i class="bi bi-box-arrow-right"></i>
+            class="btn btn-secondary">
+            <i class="bi bi-box-arrow-left"></i>
             Logout
         </button>
     </div>

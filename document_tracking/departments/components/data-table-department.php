@@ -23,11 +23,26 @@ try {
         ?>
         <tr>
         <td style="width: 160px;" class="text-center">
-            <button onclick="editDepartment(<?php echo $row['id']; ?>)" class="btn btn-outline-primary">
-                <i class="bi-pencil-fill"></i>
+            <button class="btn btn-outline-primary" 
+                onclick="showMembersModal(<?php echo $row['id']; ?>);" 
+                data-bs-title="Set Members" 
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top">
+                <i class="bi bi-people-fill"></i>
             </button>
-            <button onclick="deleteDepartment(<?php echo $row['id']; ?>)" class="btn btn-outline-primary">
-                <i class="bi-trash-fill"></i>
+            <button class="btn btn-outline-primary" 
+                onclick="editDepartment(<?php echo $row['id']; ?>)" 
+                data-bs-title="Edit" 
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top">
+                <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button class="btn btn-outline-primary" 
+                onclick="deleteDepartment(<?php echo $row['id']; ?>)" 
+                data-bs-title="Delete" 
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top">
+                <i class="bi bi-trash-fill"></i>
             </button>
         </td>
         <td class="text-end"><?php echo $row['id']; ?></td>
@@ -40,7 +55,7 @@ try {
         </td>
         <td><?php echo $row['name']; ?></td>
         <td class="text-center">
-            <a href="#" onclick="showMembersModal(<?php echo $row['id']; ?>);"><?php echo $row['members']; ?></a>
+            <?php echo $row['members']; ?>
         </td>
         </tr>
         <?php     
